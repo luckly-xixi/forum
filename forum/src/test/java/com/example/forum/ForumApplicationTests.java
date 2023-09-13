@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @SpringBootTest
 class ForumApplicationTests {
@@ -38,6 +39,12 @@ class ForumApplicationTests {
 	@Test
 	void contextLoads() {
 		System.out.println("Hello Text");
+	}
+
+
+	@Test
+	void testUUID() {
+		System.out.println(UUID.randomUUID().toString());
 	}
 
 }
