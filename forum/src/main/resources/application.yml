@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: 基于Spring Boot 的论坛系统-前后端分离 #项目名称
+  output:
+    ansi:
+      enabled: ALWAYS #配置输出效果
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/forum_db?characterEncoding=utf8&useSSL=false
+  # 数据库连接串
+    username: root # 数据库⽤⼾名
+    password: 123456 # 数据库密码
+    driver-class-name: com.mysql.jdbc.Driver #数据库连接驱动
+
+server:
+  port: 58080 #自定义服务器端口号
+
+#日志配置
+logging:
+  pattern:
+    dateformat: MM-dd HH:mm:ss #日期显示格式
+  level:
+    root: info #默认日志级别
+    com.example.forum: debug #指定包的日志级别、
+  file:
+    path: D:/log/forum # 日志保存的路径
+
+# mybatis 相关配置，单独配置，顶格写
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml # 指定 xxxMapper.xml的扫描路径
