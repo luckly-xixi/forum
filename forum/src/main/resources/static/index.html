@@ -358,7 +358,29 @@
     // ========================= 获取版块信息 =======================
     // 成功后，调用buildTopBoard()方法，构建版块列表
     $.ajax({
-      
+      type: 'get',
+      url: 'board/topList',
+      success:function(respData) {
+          if(respData.code == 0) {
+            //构建新的版块
+            buildTopBoard(respData.data);
+          } else {
+                  //提示信息
+              $.toast({
+                    heading: '警告',
+                    text: respData.message,
+                    icon: 'warning'
+                  });
+          }
+      },
+      error: function() {
+          //提示信息
+          $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+      }
     });
 
     //========================= 构造首页版块=======================

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Api(tags = "版块接口")
 @RestController
+@RequestMapping("/board")
 public class BoardController {
     //从配置文件中读取值，如果没有配置，默认值为9
     @Value("${forum.index.board-num:9}")

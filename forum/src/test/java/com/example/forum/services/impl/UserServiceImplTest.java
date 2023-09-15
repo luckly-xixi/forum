@@ -6,6 +6,7 @@ import com.example.forum.utils.MD5Util;
 import com.example.forum.utils.UUIDUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -56,5 +57,12 @@ class UserServiceImplTest {
     void selectById() {
         User user = userService.selectById(1L);
         System.out.println(user);
+    }
+
+    @Test
+    @Transactional
+    void addOneArticleCountById() {
+        userService.addOneArticleCountById(1L);
+        System.out.println("更新成功");
     }
 }

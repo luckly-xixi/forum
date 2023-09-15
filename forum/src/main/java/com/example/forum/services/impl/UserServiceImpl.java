@@ -112,4 +112,30 @@ public class UserServiceImpl implements IUserService {
         //3.返回结果
         return user;
     }
+
+    @Override
+    public void addOneArticleCountById(Long id) {
+        //非空校验
+        if(id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_BOARD_ARTICLE_COUNT.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_ARTICLE_COUNT));
+        }
+        //查询用户信息
+        User user = userMapper.selectByPrimaryKey(id);
+        if(user == null) {
+            log.warn(ResultCode.ERROR_IS_NULL.toString() + ", user id = " + id);
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_IS_NULL));
+        }
+        //更新用户的发帖数量
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setArticleCount(user.getArticleCount()+1);
+        //调用DAO执行更新
+        int row = userMapper.updateByPrimaryKeySelective(updateUser);
+        //判断受影响的行数
+        if(row != 1) {
+            log.warn(ResultCode.FAILED.toString() + ", 受影响的行数不等于1.");
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED));
+        }
+    }
 }
