@@ -3,6 +3,7 @@ package com.example.forum.controller;
 
 import com.example.forum.common.AppResult;
 import com.example.forum.common.ResultCode;
+import com.example.forum.config.AppConfig;
 import com.example.forum.model.User;
 import com.example.forum.services.IUserService;
 import com.example.forum.utils.MD5Util;
@@ -12,12 +13,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Api(tags = "用户接口")
 @Slf4j  //日志
@@ -67,5 +67,78 @@ public class UserController {
         //5. 返回成功
         return AppResult.success();
     }
+
+
+
+
+    @ApiOperation("用户登录")
+    @PostMapping("/login")
+    public AppResult login(HttpServletRequest request,
+                           @ApiParam("用户名") @RequestParam("username") @NotNull String username,
+                           @ApiParam("密码") @RequestParam("password") @NotNull String password) {
+//        1. 调用Service中的登陆方法
+            User user = userService.login(username,password);
+            if(user == null) {
+                log.warn(ResultCode.FAILED_LOGIN.toString());
+                return AppResult.failed(ResultCode.FAILED_LOGIN);
+            }
+//        2.如果登录成功把User对象设置到Session作用域中
+            HttpSession session = request.getSession(true);
+            session.setAttribute(AppConfig.USER_SESSION,user);
+//        3.返回结果
+        return AppResult.success();
+    }
+
+
+    @ApiOperation("获取用户信息")
+    @GetMapping("/info")
+    public AppResult<User> getUserInfo(HttpServletRequest request,
+                                       @ApiParam("id") @RequestParam(value = "id",required = false)Long id) {
+        //定义全局变量
+        User user = null;
+        //根据ID值判断User对象的获取方式
+        if(id == null) {
+            //如果ID为空，从Session中获取当前登录用户的信息
+            HttpSession session = request.getSession(false);
+
+
+//            //判断当前session和用户信息是否有效
+//            if(session == null || session.getAttribute(AppConfig.USER_SESSION) == null) {
+//                //用户未登录返回错误信息
+//                return AppResult.failed(ResultCode.FAILED_FORBIDDEN);
+//            }
+//            配置了拦截器
+
+            //从session中获取当前登录用户信息
+                user = (User) session.getAttribute(AppConfig.USER_SESSION);
+        } else {
+            //如果ID不为空，从数据库中按ID查询用户信息
+            user = userService.selectById(id);
+        }
+
+        //返回参数的校验
+        if(user == null) {
+            return AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        return AppResult.success(user);
+    }
+
+
+    @ApiOperation("退出登录")
+    @GetMapping("/logout")
+    public AppResult logout(HttpServletRequest request) {
+        //读取session对象
+        HttpSession session = request.getSession(false);
+        //判断session是否有效
+        if(session != null) {
+            //打印日志
+            log.info("退出成功");
+         //表示用户在登录状态，直接销毁session
+         session.invalidate();
+        }
+
+        return AppResult.success("退出成功");
+    }
+
 
 }

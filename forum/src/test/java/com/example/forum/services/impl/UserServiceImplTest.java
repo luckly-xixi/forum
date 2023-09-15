@@ -36,4 +36,25 @@ class UserServiceImplTest {
         userService.createNormalUser(user);
         System.out.println(user);
     }
+
+    @Test
+    void selectByUserName() {
+//        User user = userService.selectByUserName("Giao");
+        User user = userService.selectByUserName("Giao");
+        System.out.println(user);
+    }
+
+    @Test
+    void login() {
+        User user = userService.login("Giao","123456");
+//        User user = userService.login("Giao1","123456");
+//        User user = userService.login("Giao","1234566");
+        System.out.println(user);
+    }
+
+    @Test
+    void selectById() {
+        User user = userService.selectById(1L);
+        System.out.println(user);
+    }
 }

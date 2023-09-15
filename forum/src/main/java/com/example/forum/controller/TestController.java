@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 //作⽤在Controller上，对控制器类的说明，tags="说明该类的作⽤，可以在前台界⾯上看到的注解"
 @Api(tags = "测试类的相关接口")
-
-
 @RestController //表示返回的结果是数据
 @RequestMapping("/test") //定义一级映射路径
 public class TestController {
