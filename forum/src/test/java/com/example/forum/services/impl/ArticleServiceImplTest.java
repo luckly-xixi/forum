@@ -50,4 +50,38 @@ class ArticleServiceImplTest {
 //        List<Article> articles = articleService.selectAllByBoardId(10L);
         System.out.println(objectMapper.writeValueAsString(articles));
     }
+
+    @Test
+    void selectDetailById() throws JsonProcessingException {
+        Article article = articleService.selectDetailById(1L);
+//        Article article = articleService.selectDetailById(10L);
+        System.out.println(objectMapper.writeValueAsString(article));
+    }
+
+    @Test
+    @Transactional
+    void modify() {
+        articleService.modify(1L,"单元测试（修改提交测试）","编辑修改的单元测试");
+        System.out.println("测试成功");
+    }
+
+    @Test
+    void selectById() throws JsonProcessingException {
+        Article article = articleService.selectById(1L);
+        System.out.println(objectMapper.writeValueAsString(article));
+    }
+
+    @Test
+    @Transactional
+    void thumbsUpById() {
+        articleService.thumbsUpById(1L);
+        System.out.println("点赞成功");
+    }
+
+    @Transactional
+    @Test
+    void deleteById() {
+        articleService.deleteById(1L);
+        System.out.println("删除成功");
+    }
 }

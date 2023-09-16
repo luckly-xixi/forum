@@ -65,4 +65,12 @@ class UserServiceImplTest {
         userService.addOneArticleCountById(1L);
         System.out.println("更新成功");
     }
+
+    @Test
+    @Transactional
+    void subOneArticleCountById() {
+//        userService.subOneArticleCountById(1L);
+        userService.subOneArticleCountById(3L);
+        System.out.println("更新成功");
+    }
 }

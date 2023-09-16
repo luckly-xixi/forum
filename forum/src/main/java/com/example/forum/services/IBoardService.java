@@ -22,9 +22,14 @@ public interface IBoardService {
 
 
     /**
-     * 更新板块中的 帖子数据
+     * 版块中的帖子数量 + 1
      * @param id 版块Id
      */
     void addOneArticleCountById(Long id);
 
+    /**
+     * 版块中的帖子数量 - 1
+     * @param id 版块Id
+     */
+    void subOneArticleCountById(Long id);
 }

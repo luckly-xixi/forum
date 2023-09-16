@@ -87,7 +87,39 @@
     // ========================== 获取帖子详情 ========================== 
     // 成功后，设置ID,版块名，标题，并初始编辑区同时设置正文initEditor(edit_article.content);
     $.ajax({
+      type: 'get',
+      url: 'article/details?id=' + currentArticle.id,
+      //回调
+      success: function(respData) {
+        if(respData.code == 0) {
+          //成功
+          let article = respData.data;
+          //0. 设置帖子id
+          $('#edit_article_id').val(article.id);
+          //1. 设置板块名
+          $('#edit_article_board_name').html(article.board.name);
+          //2. 设置标题
+          $('#edit_article_title').val(article.title);//设置input标签内容用的是val()方法
+          //3. 设置正文
+          initEditor(article.content);
 
+        } else {
+          //失败,提示信息
+          $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+        }
+      },
+      error: function() {
+        //提示信息
+        $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+      }
     });
     
     // ========================== 初始化编辑器 ========================== 
@@ -124,6 +156,17 @@
     $('#edit_article_submit').click(function () {
         // ID
         let articleIdEl = $('#edit_article_id');
+        if(!articleIdEl.val()) {
+            // 提示
+            $.toast({
+              heading: '提示',
+              text: '帖子状态异常',
+              icon: 'warning'
+          });
+          return;
+        }
+
+        //标题
         let articleTitleEl = $('#edit_article_title');
         if (!articleTitleEl.val()) {
           articleTitleEl.focus();
@@ -149,10 +192,44 @@
       }
 
         // 构造修改对象
-
+      let postData = {
+        id: articleIdEl.val(),
+        title: articleTitleEl.val(),
+        content: articleContentEl.val()
+      };
         // 发送修改请求, 成功后跳转至首页changeNavActive($('#nav_board_index'));
         $.ajax({
-
+          type: 'post',
+          url: 'article/modify',
+          contentType: 'application/x-www-form-urlencoded',
+          data: postData,
+          //回调
+          success: function(respData) {
+            if(respData.code == 0) {
+              $.toast({
+                heading: '成功',
+                text: '修改成功',
+                icon: 'success'
+              });
+            //跳转页面
+            changeNavActive($('#nav_board_index'));
+            }else {
+          //失败,提示信息
+          $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+            }
+          },
+          error: function() {
+          //提示信息
+          $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+          }
         });
     });
     

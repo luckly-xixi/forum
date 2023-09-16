@@ -257,8 +257,30 @@
     // url: '/article/getById?id=' + currentArticle.id,
     // 成功后， 调用initArticleDetails()方法，初始化页面内容
     $.ajax({
-      
-
+      type: 'get',
+      url: 'article/details?id=' + currentArticle.id,
+      //回调
+      success: function(respData) {
+        if(respData.code == 0) {
+          //成功
+          initArticleDetails(respData.data);
+        } else {
+           //失败,提示信息
+           $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+        }
+      },
+      error: function() {
+         //提示信息
+         $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+      }
     });
 
     // ===================== 初始化页面内空 ======================
@@ -428,7 +450,40 @@
     // 成功后，修改点赞个数 currentArticle.likeCount = currentArticle.likeCount + 1;
     $('#details_btn_like_count').click(function () {
       $.ajax({
-        
+        type: 'post',
+        url: 'article/thumbsUp?id=' + currentArticle.id,
+      //回调
+      success: function(respData) {
+        if(respData.code == 0) {
+          //成功
+          currentArticle.likeCount = currentArticle.likeCount + 1;
+          //设置页面的值
+           $('#details_article_likeCount').html(currentArticle.likeCount);
+          //提示
+          $.toast({
+                heading: '成功',
+                text: '点赞成功',
+                icon: 'success'
+            });
+        } else {
+           //失败,提示信息
+           $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+        }
+      },
+      error: function() {
+         //提示信息
+         $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+            }
+
+
       });
     });
 
@@ -464,7 +519,36 @@
     // url: 'article/delete?id=' + $('#details_article_id').val()
     $('#details_artile_delete').click(function () {
       $.ajax({
-        
+        type: 'post',
+        url: 'article/delete?id=' + $('#details_article_id').val(),
+        //回调
+        success: function(respData) {
+        if(respData.code == 0) {
+          //提示
+          $.toast({
+                heading: '成功',
+                text: '删除成功',
+                icon: 'success'
+            });
+            //跳转到首页帖子列表
+            changeNavActive($('#nav-link-title'));
+        } else {
+           //失败,提示信息
+           $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+        }
+      },
+      error: function() {
+         //提示信息
+         $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+            }
 
       });
 
