@@ -14,14 +14,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Api(tags = "文章接口")
@@ -69,5 +68,28 @@ public class ArticleController {
             articleService.create(article);
             //响应
             return AppResult.success();
+        }
+
+
+        @ApiOperation("获取帖子列表")
+        @GetMapping("/getAllByBoardId")
+        public AppResult<List<Article>> getAllByBoardId(
+                @ApiParam("版块Id") @RequestParam(value = "boardId",required = false) Long boardId) {
+            //  定义返回结果集
+            List<Article> articles;
+            if(boardId == null) {
+                //查询所有
+                articles = articleService.selectAll();
+            } else {
+                articles = articleService.selectAllByBoardId(boardId);
+            }
+
+            //结果是否为空
+            if(articles == null) {
+                // 如果集合为空，那么创建一个空集合
+                articles = new ArrayList<>();
+            }
+            //响应结果
+            return AppResult.success(articles);
         }
 }

@@ -31,4 +31,6 @@ public class Article {
 
     private String content;
 
+    //关联的对象 - 作者
+    private User user;
 }

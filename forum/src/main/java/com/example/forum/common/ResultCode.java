@@ -21,6 +21,7 @@ public enum ResultCode {
     //关于版块的错误描述
     FAILED_BOARD_ARTICLE_COUNT      (1201,"更新帖子数量失败"),
     FAILED_BOARD_BANNED             (1202,"版块状态异常"),
+    FAILED_BOARD_NOT_EXISTS            (1203,"版块不存在"),
 
 
 

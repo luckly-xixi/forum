@@ -19,6 +19,8 @@ public interface IBoardService {
      * @return
      */
     Board selectById(Long id);
+
+
     /**
      * 更新板块中的 帖子数据
      * @param id 版块Id

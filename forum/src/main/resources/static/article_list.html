@@ -8,6 +8,7 @@
           子标题
         </div> -->
         <h2 class="page-title" id="article_list_board_title">
+          <!-- 如果是版块的页面，名字替换成板块名 -->
           首页
         </h2>
         <!-- 帖子数量 -->
@@ -86,15 +87,64 @@
       }
       // 发送请求， 成功后，显示版块相关信息
       $.ajax({
-        
+       type: 'get',
+       url: 'board/getById?id=' + boardId,
+       success: function(respData) {
+         if(respData.code == 0) {
+              //成功时，替换页面内容
+              let board = respData.data;
+              $('#article_list_board_title').html(board.name);//板块名称
+              $('#article_list_count_board').html('帖子数量: ' + board.articleCount);//文章数量
+
+         }else {
+            //失败,提示信息
+            $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+         }
+       },
+       error: function() {
+         //提示信息
+         $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+       }
       });
     }
 
     // ========================= 获取帖子列表 =======================
     // 成功后，调用listBuildArticleList()方法，构建帖子列表
     $.ajax({
-      
+      type: 'get',
+        url: 'article/getAllByBoardId' + queryString,
 
+        //回调
+        success: function(respData) {
+
+          if(respData.code == 0) {
+            //成功
+            listBuildArticleList(respData.data);
+          } else {
+            //失败,提示信息
+            $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+          }
+        },
+        error: function() {
+           //提示信息
+           $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+        }
     });
 
     // ========================= 构造帖子列表 =======================
