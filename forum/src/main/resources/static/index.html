@@ -497,7 +497,37 @@
 
       // 发送站内信请求 url = message/send, 成功与失败都调用cleanMessageForm()方法，清空输入框
       $.ajax({
-
+        type: 'post',
+        url: 'message/send',
+        contentType: 'application/x-www-form-urlencoded',
+        data: postData,
+        //回调
+        success: function(respData) {
+            if(respData.code == 0) {
+              $.toast({
+                heading: '成功',
+                text: respData.message,
+                icon: 'success'
+              });
+              //清空输入框
+              cleanMessageForm();
+            } else {
+               //提示信息
+               $.toast({
+                heading: '警告',
+                text: respData.message,
+                icon: 'warning'
+              });
+            }
+        },
+        error: function() {
+            //提示信息
+            $.toast({
+                heading: '错误',
+                text: '访问出现问题，请与管理员联系',
+                icon: 'error'
+              });
+        }
       });
     });
 

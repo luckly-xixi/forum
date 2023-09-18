@@ -36,7 +36,7 @@ public class Article {
     private String content;
 
     @ApiModelProperty("是否是作者")
-    private boolean isOwn = false;
+    private Boolean own;
 
     //关联的对象 - 作者
     private User user;

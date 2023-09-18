@@ -73,4 +73,28 @@ class UserServiceImplTest {
         userService.subOneArticleCountById(3L);
         System.out.println("更新成功");
     }
+
+    @Test
+    @Transactional
+    void modifyInfo() {
+        User user = new User();
+        user.setId(3L); // 用户Id
+//        user.setId(30L); // 用户Id
+//        user.setUsername("Giao"); //登录名
+        user.setUsername("zhangsan"); //登录名
+        user.setNickname("zhangsan"); //昵称
+//        user.setGender((byte) 0); //性别
+        user.setGender((byte) 3); //性别
+        user.setEmail("qwer@QQ.com"); //邮箱
+        user.setPhoneNum("110"); //电话
+        user.setRemark("法外狂徒"); //个人简介
+        userService.modifyInfo(user);
+    }
+
+    @Test
+    @Transactional
+    void modifyPassword() {
+        userService.modifyPassword(1L,"123456","110");
+        System.out.println("更新成功");
+    }
 }

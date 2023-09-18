@@ -2,6 +2,7 @@ package com.example.forum.services;
 
 
 import com.example.forum.model.Article;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,7 +31,12 @@ public interface IArticleService {
      */
     List<Article> selectAllByBoardId(Long boardId);
 
-
+    /**
+     * 根据用户Id查询帖子列表
+     * @param userId  用户Id
+     * @return 帖子列表
+     */
+    List<Article> selectByUserId(@Param("userId") Long userId);
 
     /**
      *  根据帖子id查询记录
@@ -70,4 +76,12 @@ public interface IArticleService {
      */
     @Transactional // 事务管理
     void deleteById(Long id);
+
+    /**
+     * 文章回复数量 + 1
+     * @param id 版块Id
+     */
+    void addOneReplyCountById(Long id);
+
+
 }

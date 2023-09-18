@@ -78,10 +78,27 @@ class ArticleServiceImplTest {
         System.out.println("点赞成功");
     }
 
-    @Transactional
+
+
     @Test
+    @Transactional
     void deleteById() {
         articleService.deleteById(1L);
         System.out.println("删除成功");
+    }
+
+    @Test
+    @Transactional
+    void addOneReplyCountById() {
+        articleService.addOneReplyCountById(1L);
+//        articleService.addOneReplyCountById(3L);
+//        articleService.addOneReplyCountById(13L);
+        System.out.println("成功");
+    }
+
+    @Test
+    void selectByUserId() throws JsonProcessingException {
+        List<Article> articles = articleService.selectByUserId(1L);
+        System.out.println(objectMapper.writeValueAsString(articles));
     }
 }

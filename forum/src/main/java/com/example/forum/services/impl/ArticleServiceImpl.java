@@ -109,6 +109,25 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
+    public List<Article> selectByUserId(Long userId) {
+        //非空校验
+        if(userId == null || userId<=0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        //校验用户是否存在
+        User user = userService.selectById(userId);
+        if(user == null) {
+            log.warn(ResultCode.FAILED_USER_NOT_EXISTS.toString() + " , user id = " + userId);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_NOT_EXISTS));
+        }
+        //调用DAO
+        List<Article> articles = articleMapper.selectByUserId(userId);
+
+        return articles;
+    }
+
+    @Override
     public Article selectById(Long id) {
         if(id == null || id <= 0) {
             log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
@@ -233,6 +252,39 @@ public class ArticleServiceImpl implements IArticleService {
         userService.subOneArticleCountById(article.getUserId());
 
         log.info("删除帖子成功, article id = " + article.getId() + ", user id = " + article.getUserId());
+    }
+
+
+    @Override
+    public void addOneReplyCountById(Long id) {
+        //非空校验
+        if(id == null || id <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        //    获取帖子记录
+        Article article = articleMapper.selectByPrimaryKey(id);
+        if(article == null || article.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_BOARD_NOT_EXISTS.toString() + ", article = " + id);
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_NOT_EXISTS));
+        }
+        //   帖子异常  ,  封帖
+        if(article.getState() == 1 ) {
+            log.warn(ResultCode.FAILED_ARTICLE_BANNED.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_ARTICLE_BANNED));
+        }
+        //构造更新对象
+        Article updateArticle = new Article();
+        updateArticle.setId(article.getId());
+        //帖子回复数 + 1
+        updateArticle.setReplyCount(article.getReplyCount() + 1);
+        updateArticle.setUpdateTime(new Date());
+        //执行更新
+        int row = articleMapper.updateByPrimaryKeySelective(updateArticle);
+        if(row != 1) {
+            log.warn(ResultCode.ERROR_SERVICES.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
+        }
     }
 
 
