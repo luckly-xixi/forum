@@ -29,6 +29,8 @@ logging:
     root: info #默认日志级别
     com.example.forum: debug #指定包的日志级别、
   file:
+#    path: /root/log/fourm_db # 生产环境的日志目录
+
     path: D:/log/forum # 日志保存的路径
 
 # mybatis 相关配置，单独配置，顶格写

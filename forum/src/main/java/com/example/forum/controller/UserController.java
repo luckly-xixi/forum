@@ -9,14 +9,12 @@ import com.example.forum.services.IUserService;
 import com.example.forum.utils.MD5Util;
 import com.example.forum.utils.StringUtil;
 import com.example.forum.utils.UUIDUtil;
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,10 +30,10 @@ public class UserController {
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public AppResult register(@ApiParam("用户名") @RequestParam("username") @NotNull String username,
-                              @ApiParam("昵称") @RequestParam("nickname") @NotNull String nickname,
-                              @ApiParam("密码") @RequestParam("password") @NotNull String password,
-                              @ApiParam("重复密码") @RequestParam("passwordRepeat") @NotNull String passwordRepeat) {
+    public AppResult register(@ApiParam("用户名") @RequestParam("username") @NonNull String username,
+                              @ApiParam("昵称") @RequestParam("nickname") @NonNull String nickname,
+                              @ApiParam("密码") @RequestParam("password") @NonNull String password,
+                              @ApiParam("重复密码") @RequestParam("passwordRepeat") @NonNull String passwordRepeat) {
 //       1. 非空校验
 //        if(StringUtil.isEmpty(username) ||
 //        StringUtil.isEmpty(nickname) ||
@@ -76,8 +74,8 @@ public class UserController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public AppResult login(HttpServletRequest request,
-                           @ApiParam("用户名") @RequestParam("username") @NotNull String username,
-                           @ApiParam("密码") @RequestParam("password") @NotNull String password) {
+                           @ApiParam("用户名") @RequestParam("username")  @NonNull String username,
+                           @ApiParam("密码") @RequestParam("password")  @NonNull String password) {
 //        1. 调用Service中的登陆方法
             User user = userService.login(username,password);
             if(user == null) {

@@ -10,13 +10,12 @@ import com.example.forum.model.Board;
 import com.example.forum.model.User;
 import com.example.forum.services.IArticleService;
 import com.example.forum.services.IBoardService;
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,9 +43,9 @@ public class ArticleController {
         @ApiOperation("发布新帖")
         @PostMapping("/create")
         public AppResult create (HttpServletRequest request,
-                                 @ApiParam("版块Id") @RequestParam("boardId") @NotNull Long boardId,
-                                 @ApiParam("文章标题") @RequestParam("title") @NotNull String title,
-                                 @ApiParam("文章内容") @RequestParam("content") @NotNull String content) {
+                                 @ApiParam("版块Id") @RequestParam("boardId") @NonNull Long boardId,
+                                 @ApiParam("文章标题") @RequestParam("title") @NonNull String title,
+                                 @ApiParam("文章内容") @RequestParam("content") @NonNull String content) {
             //校验用户禁言
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);
@@ -98,7 +97,7 @@ public class ArticleController {
         @ApiOperation("根据帖子Id获取详情")
         @GetMapping("/details")
         public AppResult<Article> getDetails (HttpServletRequest request,
-                @ApiParam("帖子Id") @RequestParam("id") @NotNull Long id){
+                @ApiParam("帖子Id") @RequestParam("id") @NonNull Long id){
             //从session中获取当前登录用户
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);
@@ -123,9 +122,9 @@ public class ArticleController {
         @ApiOperation("修改帖子")
         @PostMapping("/modify")
         public AppResult modify(HttpServletRequest request,
-                                @ApiParam("帖子Id") @RequestParam("id") @NotNull Long id,
-                                @ApiParam("帖子标题") @RequestParam("title") @NotNull String title,
-                                @ApiParam("帖子正文") @RequestParam("content") @NotNull String content) {
+                                @ApiParam("帖子Id") @RequestParam("id") @NonNull Long id,
+                                @ApiParam("帖子标题") @RequestParam("title") @NonNull String title,
+                                @ApiParam("帖子正文") @RequestParam("content") @NonNull String content) {
             //获取当前登录用户
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);
@@ -160,7 +159,7 @@ public class ArticleController {
         @ApiOperation("点赞")
         @PostMapping("/thumbsUp")
         public AppResult thumbsUp(HttpServletRequest request,
-                                  @ApiParam("帖子Id") @RequestParam("id") @NotNull Long id) {
+                                  @ApiParam("帖子Id") @RequestParam("id") @NonNull Long id) {
             //获取用户状态
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);
@@ -178,7 +177,7 @@ public class ArticleController {
         @ApiOperation("删除帖子")
         @PostMapping("/delete")
         private AppResult deleteById(HttpServletRequest request,
-                                     @ApiParam("帖子Id") @RequestParam("id") @NotNull Long id) {
+                                     @ApiParam("帖子Id") @RequestParam("id") @NonNull Long id) {
             // 校验用户状态
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);

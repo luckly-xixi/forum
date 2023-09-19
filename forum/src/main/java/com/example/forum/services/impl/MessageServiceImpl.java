@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -59,6 +60,19 @@ public class MessageServiceImpl implements IMessageService {
     }
 
     @Override
+    public Message selectById(Long id) {
+        //非空校验
+        if(id == null || id <= 0 ) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        //调用DAO
+        Message message = messageMapper.selectByPrimaryKey(id);
+
+        return message;
+    }
+
+    @Override
     public Integer selectUnreadCount(Long receiveUserId) {
         //非空校验
         if(receiveUserId == null || receiveUserId <= 0) {
@@ -74,6 +88,57 @@ public class MessageServiceImpl implements IMessageService {
         }
 
         return count;
+    }
+
+    @Override
+    public List<Message> selectByReceiveUserId(Long receiveUserId) {
+        //非空校验
+        if(receiveUserId == null || receiveUserId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        List<Message> messages = messageMapper.selectByReceiveUserId(receiveUserId);
+        return messages;
+    }
+
+    @Override
+    public void updateStateById(Long id, Byte state) {
+        //非空校验
+        if(id == null || id <= 0 || state <0 || state > 2) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        //构造更新对象
+        Message updateMessage = new Message();
+        updateMessage.setId(id);
+        updateMessage.setState(state);
+        Date date = new Date();
+        updateMessage.setUpdateTime(date);
+        //调用DAO
+        int row = messageMapper.updateByPrimaryKeySelective(updateMessage);
+        if(row != 1) {
+            log.warn(ResultCode.ERROR_SERVICES.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.ERROR_SERVICES));
+        }
+    }
+
+    @Override
+    public void reply(Long repliedId, Message message) {
+        //非空校验
+        if(repliedId == null || repliedId <= 0) {
+            log.warn(ResultCode.FAILED_PARAMS_VALIDATE.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_PARAMS_VALIDATE));
+        }
+        //校验repliedId对应的站内信状态
+        Message existsMessage = messageMapper.selectByPrimaryKey(repliedId);
+        if(existsMessage == null || existsMessage.getDeleteState() == 1) {
+            log.warn(ResultCode.FAILED_MESSAGE_NOT_EXISTS.toString());
+            throw new ApplicationException(AppResult.failed(ResultCode.FAILED_MESSAGE_NOT_EXISTS));
+        }
+        // 更新状态为已回复
+        updateStateById(repliedId, (byte) 2);
+        //回复内容写入数据库
+        create(message);
     }
 
 
