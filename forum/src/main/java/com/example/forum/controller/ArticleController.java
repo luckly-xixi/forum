@@ -149,7 +149,6 @@ public class ArticleController {
 
             //调用Service
             articleService.modify(id,title,content);
-            //打印日志
             log.info("帖子更新成功。 Article id = " + id + "User id = " + user.getId() + " .");
 
             return AppResult.success();

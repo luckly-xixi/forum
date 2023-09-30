@@ -57,9 +57,9 @@ public class MessageController {
 
             //4.封装对象
             Message message =new Message();
-            message.setPostUserId(user.getId()); //发送者Id
-            message.setReceiveUserId(receiveUserId); // 接收者Id
-            message.setContent(content); // 站内信内容
+            message.setPostUserId(user.getId());
+            message.setReceiveUserId(receiveUserId);
+            message.setContent(content);
 
             //5.调用DAO
             messageService.create(message);
@@ -75,7 +75,7 @@ public class MessageController {
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute(AppConfig.USER_SESSION);
             //2.调用Service
-            Integer count = messageService.selectUnreadCount(user.getId());//当亲登录用户的id就是当前接收者id\
+            Integer count = messageService.selectUnreadCount(user.getId());
             return AppResult.success(count);
         }
 

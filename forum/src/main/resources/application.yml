@@ -1,45 +1,45 @@
 spring:
   application:
-    name: 基于Spring Boot 的论坛系统-前后端分离 #项目名称
+    name: 基于Spring Boot 的论坛系统-前后端分离
   output:
     ansi:
-      enabled: ALWAYS #配置输出效果
+      enabled: ALWAYS
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/forum_db?characterEncoding=utf8&useSSL=false
   # 数据库连接串
-    username: root # 数据库⽤⼾名
-    password: 123456 # 数据库密码
-    driver-class-name: com.mysql.jdbc.Driver #数据库连接驱动
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
   mvc:
     pathmatch:
-      matching-strategy: ANT_PATH_MATCHER #Springfox-Swagger兼容性配置
+      matching-strategy: ANT_PATH_MATCHER
   # JSON序列化配置
   jackson:
-    date-format: yyyy-MM-dd HH:mm:ss # ⽇期格式
-    default-property-inclusion: NON_NULL # 不为null时序列化
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: NON_NULL
 
 server:
-  port: 58080 #自定义服务器端口号
+  port: 58080
 
 #日志配置
 logging:
   pattern:
-    dateformat: MM-dd HH:mm:ss #日期显示格式
+    dateformat: MM-dd HH:mm:ss
   level:
-    root: info #默认日志级别
-    com.example.forum: debug #指定包的日志级别、
+    root: info
+    com.example.forum: debug
   file:
 #    path: /root/log/fourm_db # 生产环境的日志目录
 
-    path: D:/log/forum # 日志保存的路径
+    path: D:/log/forum
 
-# mybatis 相关配置，单独配置，顶格写
+
 mybatis:
-  mapper-locations: classpath:mapper/**/*.xml # 指定 xxxMapper.xml的扫描路径
+  mapper-locations: classpath:mapper/**/*.xml
 
 # 项⽬⾃定义相关配置
 forum:
   login:
-    url: sign-in.html # 未登录状况下强制跳转⻚⾯
-  index: # ⾸⻚配置节点
-    board-num: 9 # ⾸⻚中显⽰的版块个数
+    url: sign-in.html
+  index:
+    board-num: 9 
