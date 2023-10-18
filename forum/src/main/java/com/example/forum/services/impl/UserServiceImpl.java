@@ -37,11 +37,8 @@ public class UserServiceImpl implements IUserService {
 
         //2.按用户名查询用户信息
         User existsUser = userMapper.selectByUserName(user.getUsername());
-            //2.1 判断用户是否存在
         if(existsUser != null) {
-            //打印日志
             log.info(ResultCode.FAILED_USER_EXISTS.toString());
-            //抛出异常,统一抛出ApplicationException
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED_USER_EXISTS));
         }
 
@@ -59,9 +56,7 @@ public class UserServiceImpl implements IUserService {
         //写入数据库
         int row = userMapper.insertSelective(user);
         if(row != 1) {
-            //打印日志
             log.info(ResultCode.FAILED_CREATE.toString());
-            //抛出异常,统一抛出ApplicationException
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED_CREATE));
         }
         //新增成功

@@ -54,9 +54,7 @@ public class UserController {
         user.setUsername(username);
         user.setNickname(nickname);
         //处理密码
-        //生成盐
         String salt = UUIDUtil.UUID_32();
-        //生成密码的密文
         String encryptPassword = MD5Util.md5salt(password,salt);
 
         user.setPassword(encryptPassword);

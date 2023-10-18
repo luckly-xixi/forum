@@ -3,10 +3,8 @@
 <mapper namespace="com.example.forum.dao.UserMapper">
     <!--
     1. 注意namespace表⽰命名空间，要与 UserMapper.xml中的namespace相同
-    2. 统⼀⽤com.example.forum.dao.UserMapper, 也就是UserMapper的完全限定名(包
-    名+类名)
-    3. 不同的映射⽂件指定了相同的namespace后，定义的所有⽤id或name标识的结果集映射都可以
-    在不同的⽂件中共享
+    2. 统⼀⽤com.example.forum.dao.UserMapper, 也就是UserMapper的完全限定名(包名+类名)
+    3. 不同的映射⽂件指定了相同的namespace后，定义的所有⽤id或name标识的结果集映射都可以在不同的⽂件中共享
     -->
 
 
