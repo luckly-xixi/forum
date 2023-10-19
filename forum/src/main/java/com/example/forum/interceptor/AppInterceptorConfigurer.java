@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 
-//表示一个配置类
+//配置类
 @Configuration
 public class AppInterceptorConfigurer implements WebMvcConfigurer {
 

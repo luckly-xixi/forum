@@ -49,12 +49,10 @@ public class ArticleReplyController {
         Article article = articleService.selectById(articleId);
         // 是否存在，或已删除
         if (article == null || article.getDeleteState() == 1) {
-            // 表示已删除或不存在
             return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);
         }
         // 是否封帖
         if (article.getState() == 1) {
-            // 表示已封贴
             return AppResult.failed(ResultCode.FAILED_ARTICLE_BANNED);
         }
 
@@ -73,7 +71,7 @@ public class ArticleReplyController {
     @ApiOperation("获取回复列表")
     @GetMapping("/getReplies")
     public AppResult<List<ArticleReply>> getRepliesByArticleId(@ApiParam("帖子Id") @RequestParam("articleId") @NonNull Long articleId) {
-        //校验帖子是否存在
+        //校验
         Article article = articleService.selectById(articleId);
         if(article == null || article.getDeleteState() == 1) {
             return AppResult.failed(ResultCode.FAILED_ARTICLE_NOT_EXISTS);

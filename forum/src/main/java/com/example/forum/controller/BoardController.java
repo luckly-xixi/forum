@@ -39,9 +39,7 @@ public class BoardController {
     @GetMapping("/topList")
     public AppResult<List<Board>> topList() {
         log.info("首页板块配置数值：" + indexBoardNum);
-        //调用Service查询结果
         List<Board> boards = boardService.selectByNum(indexBoardNum);
-        //判断是否为空
         if(boards == null) {
             boards = new ArrayList<>();
         }
@@ -54,9 +52,7 @@ public class BoardController {
     @GetMapping("/getById")
     public AppResult<Board> getById(
             @ApiParam("版块id") @RequestParam("id") @NonNull Long id) {
-        //调用Service
         Board board = boardService.selectById(id);
-        //对查询结果校验
         if(board == null || board.getDeleteState() ==1 ){
             log.warn(ResultCode.FAILED_BOARD_NOT_EXISTS.toString());
             throw new ApplicationException(AppResult.failed(ResultCode.FAILED_BOARD_NOT_EXISTS));
